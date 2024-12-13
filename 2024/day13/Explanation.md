@@ -5,3 +5,7 @@ A claw machine puzzle that is an excuse to solve a system of linear equations. O
 ## Part 1
 
 For Part 1, where a straight solution is needed, I used Cramer's rule to determine the unknowns. As a closed solution, its very easy to code, and pretty easy to parse. Stack Overflow suggested `ans_2 == ans2.trunc()` as a performant way to check whether something is an integer. A question I have, since I haven't seen Part 2 yet, is whether I filtered at the correct point. So, I have the check for `ans_1 > 100` within the per-claw machine code, while I have the token values outside within the `part1` function. Another interesting question that Godbolt could answer is whether `.map().sum()` is equivalent to `.fold()`. Stack Overflow suggests yes.
+
+## Part 2
+
+Refactoring out the filter for `ans_1 > 100` proved necessary. Aside from that, this proved a bit of a nothing of a Part 2. `i64s` and `f64` were able to hold the values necessary for hte new prize locations, while Cramer's rule being a closed solution means that the code took no longer to run than the Part 1 solution.
