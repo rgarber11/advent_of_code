@@ -26,3 +26,20 @@ impl Settings {
         }
     }
 }
+struct ClawMachine {
+    button_a: (i64, i64),
+    button_b: (i64, i64),
+    goal: (i64, i64),
+}
+pub struct FileData {
+    machines: Box<[ClawMachine]>,
+}
+impl FileData {
+    pub fn read_file(file_path: &str) -> Option<FileData> {}
+}
+pub fn part1(file_data: FileData) -> i64 {
+    0
+}
+pub fn part2(file_data: FileData) -> i64 {
+    0
+}
