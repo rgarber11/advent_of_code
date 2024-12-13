@@ -1,3 +1,4 @@
+use core::f64;
 use std::{
     env::Args,
     fs::File,
@@ -117,19 +118,35 @@ impl FileData {
         })
     }
 }
-pub fn part1(file_data: FileData) -> i64 {
-    for machine in &file_data.machines {
-        println!(
-            "Button A: ({}, {}), Button B: ({}, {}), Goal: ({}, {})",
-            machine.button_a.0,
-            machine.button_a.1,
-            machine.button_b.0,
-            machine.button_b.1,
-            machine.goal.0,
-            machine.goal.1
-        );
+fn solve_machine(claw_machine: &ClawMachine) -> Option<(i64, i64)> {
+    let determinant_a = (claw_machine.button_a.0 * claw_machine.button_b.1
+        - claw_machine.button_b.0 * claw_machine.button_a.1) as f64;
+    if determinant_a == 0.0 {
+        return None;
     }
-    0
+    let determinant_a1 = claw_machine.goal.0 * claw_machine.button_b.1
+        - claw_machine.button_b.0 * claw_machine.goal.1;
+    let determinant_a2 = claw_machine.button_a.0 * claw_machine.goal.1
+        - claw_machine.goal.0 * claw_machine.button_a.1;
+    let ans_1 = (determinant_a1 as f64) / determinant_a;
+    let ans_2 = (determinant_a2 as f64) / determinant_a;
+    if ans_1 != ans_1.trunc() || ans_1 > 100.0 || ans_2 != ans_2.trunc() || ans_2 > 100.0 {
+        return None;
+    }
+    Some((ans_1 as i64, ans_2 as i64))
+}
+pub fn part1(file_data: FileData) -> i64 {
+    file_data
+        .machines
+        .iter()
+        .map(|claw| {
+            if let Some(ans) = solve_machine(claw) {
+                ans.0 * 3 + ans.1 * 1
+            } else {
+                0
+            }
+        })
+        .sum()
 }
 pub fn part2(file_data: FileData) -> i64 {
     0
