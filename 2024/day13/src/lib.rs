@@ -130,7 +130,7 @@ fn solve_machine(claw_machine: &ClawMachine) -> Option<(i64, i64)> {
         - claw_machine.goal.0 * claw_machine.button_a.1;
     let ans_1 = (determinant_a1 as f64) / determinant_a;
     let ans_2 = (determinant_a2 as f64) / determinant_a;
-    if ans_1 != ans_1.trunc() || ans_1 > 100.0 || ans_2 != ans_2.trunc() || ans_2 > 100.0 {
+    if ans_1 != ans_1.trunc() || ans_2 != ans_2.trunc() {
         return None;
     }
     Some((ans_1 as i64, ans_2 as i64))
@@ -141,13 +141,28 @@ pub fn part1(file_data: FileData) -> i64 {
         .iter()
         .map(|claw| {
             if let Some(ans) = solve_machine(claw) {
-                ans.0 * 3 + ans.1 * 1
+                if ans.0 > 100 || ans.1 > 100 {
+                    0
+                } else {
+                    ans.0 * 3 + ans.1 * 1
+                }
             } else {
                 0
             }
         })
         .sum()
 }
-pub fn part2(file_data: FileData) -> i64 {
-    0
+pub fn part2(mut file_data: FileData) -> i64 {
+    file_data
+        .machines
+        .iter_mut()
+        .map(|claw| {
+            claw.goal = (claw.goal.0 + 10000000000000, claw.goal.1 + 10000000000000);
+            if let Some(ans) = solve_machine(claw) {
+                ans.0 * 3 + ans.1 * 1
+            } else {
+                0
+            }
+        })
+        .sum()
 }
